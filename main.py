@@ -6,7 +6,7 @@ from bs4 import BeautifulSoup
 import string
 
 # Newline Extraction Seems to be working dandy. Will need to screen for empty strings and those comprised exclusively of integers
-#
+# Also works for program outcomes!!!!
 integer_list = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0']
 
 
@@ -99,7 +99,6 @@ def remove_newlines(tag_text):
 
 
 def filter_entries(entry_list):
-    # As it is the intake list would be of only one course. WIll want to make it a list of all courses
 
     filtered_list = remove_integer_strings(entry_list)
     return filtered_list
@@ -119,48 +118,24 @@ def remove_integer_strings(input_list):
             filtered_list.append(strings)
     return filtered_list
 
+def get_BS4_resultset(url):
+    #Feed in local path to saved HTML page. Only works for one page at a time - not interactive with JS
+    req = urllib.request.Request(url)
+    page = urllib.request.urlopen(req)
+    page_soup = BeautifulSoup(page, 'lxml') #Creates BS object from page
+    tag = page_soup.find_all('tbody')   #creates ResultSet object featuring all 'tbody' hits. iterable. use .get_text()
+    return tag
+
+
 
 
 if __name__ == "__main__":
 
 
-    # Save toolbox page with relevant department selected
-    req = urllib.request.Request(
-        "file:///C:/Users/rpaulos/Desktop/Outcomes%20Assessment%20Toolbox_files/MATH.html",
-        data=None,
-        # headers={
-        #     'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/35.0.1916.47 Safari/537.36'
-        # }
-    )
-
-    page = urllib.request.urlopen(req)
-    page_soup = BeautifulSoup(page, 'lxml')
-
-
-    # page_soup.tbody filters out each course and its accompanying outcomes.
-    # Page_soup.tobdy.td iterates through each one (including the course title)
-    # Note - Finding the class one level above the tbody may make iterating over the entire list possible
-    #print(page_soup.tbody.contents[9])
-
-    #print(page_soup.prettify())
-    #print(page_soup.find_all('tbody'))
-
-    #print(page_soup.find_all('tbody'))
-    #print(page_soup.find_all('tbody'))
-
-
-
     #print(page_soup)
     # Below stores resultset in tag and is iterable. objects held in tag can be cast to string. Need to extract info.
     ################################
-    tag = page_soup.find_all('tbody')
-    # print(len(tag))
-    # print(tag[1])
-    test = tag[12].get_text()
-    #print(type(test))
-    #print(len(test))
-    #print(test)
-   # print(tag)
+    tag = get_BS4_resultset("file:///C:/Users/rpaulos/Desktop/Outcomes%20Assessment%20Toolbox_files/medical%20information.html")
 
     z = 0
 
@@ -171,24 +146,12 @@ if __name__ == "__main__":
         print(filter_entries(remove_newlines(tag[z].get_text())))
         z+=1
 
-    #alphabet = extract_course_and_outcomes(cheese)
-    #print(alphabet)
-    #print(test)
-    #alphabet = extract_course_and_outcomes(test)
-    #print(alphabet)
-    j = 0
-    #print(repr(tag[0].get_text()))
 
 
 
 
 
 
-    # while j < len(tag):
-    #     test = tag[j].get_text()
-    #     temp.append(test)
-    #     print(j, extract_course_and_outcomes(test))
-    #     if len(extract_course_and_outcomes(test)) == 1:
-    #         print(j, extract_course_and_outcomes(test))
-    #     j += 1
+
+
 
