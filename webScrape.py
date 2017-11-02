@@ -127,6 +127,14 @@ def get_BS4_resultset(url):
     return tag
 
 
+def get_final_product(url):
+
+    resultList = []
+    resultSet = get_BS4_resultset(url)
+
+    for values in resultSet:
+        resultList.append(filter_entries((remove_newlines(values.get_text()))))
+    return resultList
 
 
 if __name__ == "__main__":
@@ -139,12 +147,16 @@ if __name__ == "__main__":
 
     z = 0
 
+    #print(get_final_product("file:///C:/Users/rpaulos/Desktop/Outcomes%20Assessment%20Toolbox_files/medical%20information.html"))
+    for values in get_final_product("file:///C:/Users/rpaulos/Desktop/Outcomes%20Assessment%20Toolbox_files/MATH.html"):
+        print(values)
 
-    while z < len(tag):
-        # How is the below line removing integer strings AND empty strings/?!
-       # print(remove_integer_strings(remove_newlines(tag[z].get_text())))
-        print(filter_entries(remove_newlines(tag[z].get_text())))
-        z+=1
+
+    # while z < len(tag):
+    #     # How is the below line removing integer strings AND empty strings/?!
+    #    # print(remove_integer_strings(remove_newlines(tag[z].get_text())))
+    #     print(filter_entries(remove_newlines(tag[z].get_text())))
+    #     z+=1
 
 
 
